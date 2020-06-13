@@ -1,8 +1,76 @@
 \documentclass{article}
+\usepackage{hyperref}
+\usepackage{listings}
+
 \title{LoFASM Pulsar Search with PRESTO}
 \author{Keith E. Boehler Jr.}
 \date{}
 \begin{document}
    \maketitle
    Hello world!
-\end{document}
+   
+   \section{Installing Presto}
+   The instructions here are based on those by Scott Ransom's Install page on github as well as other 
+   tips found on the internet. The following will be centered on using Ubuntu 20.04. Tips for macOS Mojave
+   will be provided as well. 
+   
+   \subsection{FFTW 3}
+    This one is rather straight forward. 
+    
+    
+    \begin{enumerate}
+    	\item At the time of this writing the latest version is 3.3.8 and can be downloaded \href{http://www.fftw.org/download.html}{from this link}
+    	\item \noindent Once the source has been downloaded it can be unpacked using the command:
+	    \begin{lstlisting}[language=bash]
+	    $ tar -zx fftw-x.x.x.tar.gz 
+	    \end{lstlisting}
+    	(Will need to replace the x.x.x with the current version number). And enter the unpacked directory.
+    	\item \noindent After that we need to configure. According to Scott there are some suggested flags if you are
+    	using an Intel chip, which I am. So my command will look like: 
+	    \begin{lstlisting}[language=bash]
+	    ./configure --prefix=$HOME \
+	    --enable-shared --enable-single \
+	    --enable-sse --enable-sse2 --enable-avx \
+	    --enable-avx2 --enable-fma
+	    \end{lstlisting}
+	    \item \noindent Followed by: \begin{lstlisting}[language=bash]
+	    $ make
+	    \end{lstlisting}
+	    \item \noindent Followed by: 
+		\begin{lstlisting}[language=bash]
+		$ make check
+		\end{lstlisting}
+	    \item \noindent Followed by: 
+		\begin{lstlisting}[language=bash]
+		$ make install
+		\end{lstlisting}
+	    \item \noindent Followed by:
+		\begin{lstlisting}[language=bash]
+		 $ make installcheck
+		\end{lstlisting}
+    	\end{enumerate}
+    	Due to the fact that we used \$HOME in our prefix we should have /bin /include and other directories
+    	being made in our home directory. This will help later when we are making our environment variables
+    	as the location of configure files and executable will be in more standard location.
+    
+    	\subsection{PGPLOT}
+    	This one is a bit involved, so I recommend brewing your favorite cup of Joe before getting started. This
+    	portion is based on the PGPLOT’s instructions for all UNIX systems. 
+    	
+    	\begin{enumerate}
+    	\item \noindent I downloaded my source for PGPlot from \href{ftp://ftp.astro.caltech.edu/pub/pgplot/pgplot5.2.tar.gz}{here, version 5.2.}. And untarred with: 
+    	\begin{lstlisting}[language=bash]
+    	$ tar -xzvf pgplot5.2.tar.gz
+    	\end{lstlisting}
+    	 At this point it is prudent to create what the pgplot unix instructions call the target directory, that is where we will install. I find it to be clear to rename the directory we just unpacked to \texttt{pgplot\_src} and the actual install directory to be \texttt{pgplot}. 
+    	\item Copy the drivers list from the source directory (\texttt{pgplot\_src}) into our install directory (\texttt{pgplot}). If you are inside the install directory here is a snippet: \noindent
+    	\begin{lstlisting}[language=bash]
+    	$ cp ../pgplot_src/drivers.list .
+    	\end{lstlisting} 
+    	\item 
+    	\end{enumerate}
+    	
+
+
+    	
+\end{document} 
