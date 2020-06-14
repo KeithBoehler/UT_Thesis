@@ -14,6 +14,13 @@
    The instructions here are based on those by Scott Ransom's Install page on github as well as other 
    tips found on the internet. The following will be centered on using Ubuntu 20.04. Tips for macOS Mojave
    will be provided as well. 
+   \subsection{Prerequisites}
+   \begin{enumerate}
+   	\item gcc with gfortran
+   	\item csh
+   	\item autoconf
+   	\item meson
+   \end{enumerate}
    
    \subsection{FFTW 3}
     This one is rather straight forward. 
@@ -103,6 +110,11 @@ $./pgplot_src/makemake ../pgplot_src/ linux g77_gcc
     	\subsection{TEMPO}
     	\begin{enumerate}
     		\item Cloning the source from \href{git://git.code.sf.net/p/tempo/tempo}{git.} 
+    		\item run: \noindent \begin{lstlisting}[language=bash]
+    		$ ./configure --prefix=$HOME
+    		\end{lstlisting} 
+    		\item run \texttt{make}
+    		\item run \texttt{make install}
     	\end{enumerate}
 
     	
