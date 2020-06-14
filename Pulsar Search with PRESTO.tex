@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{graphicx}
 
 \title{LoFASM Pulsar Search with PRESTO}
 \author{Keith E. Boehler Jr.}
@@ -67,7 +68,42 @@
     	\begin{lstlisting}[language=bash]
     	$ cp ../pgplot_src/drivers.list .
     	\end{lstlisting} 
-    	\item 
+    	\item Using any text editor open the drivers file. Uncomment the needed drivers by removing the `` ! '' from the needed line. It is recommended to only uncomment the needed drivers. For PRESTO we at a minimum need the postscript (those with PS in the name) and xwindow (xw and xserver). And save the changes. 
+    	\item Create the Makefile. This step can be somewhat involved so a fresh pot of coffee is needed to lift spirits. While the below is going to be centered for Ubuntu 20.04 I do have some tips for installing on macOS Mojave. I used homebrew to install xquartz (an xserver for mac), gcc (for gfortran and the c compiler.), and there is also a special configuration file that can be found \href{http://mingus.as.arizona.edu/~bjw/software/pgplot_macosx_conf.tar}{at this location}. Otherwise the following should be similar:
+    		\begin{enumerate}
+    			\item Run the makemake script with the following template: \texttt{path2/pgsrc/makemake path2/pgsrc Ostype fortran/cc}. That is to say while in your target directory run stuff in your source directory. Select if you are using linux and a C-Compiler and Fortran compiler. It is worth noting that we will edit the resulting Makefile with the compilers we will actually use. My command looks like this: \begin{lstlisting}[language=bash]
+
+$./pgplot_src/makemake ../pgplot_src/ linux g77_gcc
+    			\end{lstlisting}
+    			\item Enter the makefile and change the \texttt{FCOMPL} to \texttt{gfortran} (install if you dont have it at this point. Also on macOS should change the C compiler to a gcc one). Then type \texttt{make}. My install of Ubuntu is fresh so it was also missing \texttt{libx11-dev} (X11/Xos.h: No such file or directory ← Error). Here is what a successful run looks like: Figure \ref{fig:pgplot-make}.     			
+    			\begin{figure}[h]
+    				\includegraphics[width=\linewidth]{Images/sucesfful-pgplot-make.png}
+    				\caption{Successful PGPlot make}
+    				\label{fig:pgplot-make}  			
+    			\end{figure}
+    			\item Enter: \texttt{\$ make cgp} \ref{fig:pgplot-make-cpg}
+    			\begin{figure}[h]
+    				\includegraphics[width=\linewidth]{Images/sucesfful-pgplot-make-cgp.png}
+    				\caption{Successful PGPlot make cpg}
+    				\label{fig:pgplot-make-cpg}  			
+    			\end{figure}
+    			\item Enter: \texttt{\$ ld -shared -o libcpgplot.so --whole-archive libcpgplot.a}
+    			
+    			
+    			\item At this point we should set our environment variables 
+    			\footnote{I like to keep a file in my home directory called \texttt{.bash\_astro}. In it i have a variable called \texttt{ASTROSOFT} that points to where i am installing my programs. For example my \texttt{LD\_LIBRARY\_PATH} will be defined as: \texttt{export LD\_LIBRARY\_PATH=\$ASTROSOFT/pgplot:\$LD\_LIBRARY\_PATH}. The word \texttt{export} tells bash this is environment variable. The \texttt{\$} is used to envoke other variables. The \texttt{':'} is to re-appending any previous \texttt{LD\_LIBRARY\_PATH}.}. 
+    			This will allow our shell to find shared objects, executables, and device outputs. We will need the \texttt{PGPLOT\_DIR=/path/to/pgplot}; this should have the files \texttt{grfont.dat} and \texttt{rgb.txt}. We will also need a \texttt{LD\_LIBRARY\_PATH} that should point to the file \texttt{libpgplot.so}, If you compiled from source like we did in this example it should be in the same big directory. Finally we can set the \texttt{PGPLOT\_DEV=/XWINDOW} to default to outputting to an xwindow. 
+    			
+    			\item In principle we are done. Now lets test our work by running the demo programs \ref{fig:sucesfful-pgplot-install}.  
+    			\begin{figure}[h]
+    				\includegraphics[width=\linewidth]{Images/sucesfful-pgplot-install.png}
+    				\caption{Run them with ./pgdemo1}
+    				\label{fig:sucesfful-pgplot-install}  			
+    			\end{figure}
+    	
+    		\end{enumerate}
+    		
+    		
     	\end{enumerate}
     	
 
