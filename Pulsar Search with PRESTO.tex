@@ -14,14 +14,12 @@
 The instructions here are based on those by Scott Ransom's Install page on github as well as other tips found on the internet. The following will be centered on using Ubuntu 20.04. Tips for macOS Mojave will be provided as well. 
 \subsection{Prerequisites}
 \begin{enumerate}
-   	\item gcc with gfortran
-   	\item csh
-   	\item autoconf
-   	\item meson
+   	\item GNU gcc with gfortran
+    \item For glib -> csh autoconf meson libglib2.0-dev
     \item For cfitsio -> libcfitsio-bin libcfitsio-doc libcfitsio-dev
     \item For PRESTO -> libpng.dev zlib1g-dev
     \item For FFTW3 -> libfftw3-bin libfftw3-dev
-    \item 
+    \item Python 2.7 with virtual env. Anaconda works well. 
 \end{enumerate}
    
 \subsection{FFTW 3}
@@ -111,7 +109,8 @@ $./pgplot_src/makemake ../pgplot_src/ linux g77_gcc
     	
 \subsection{TEMPO}
 \begin{enumerate}
-    \item Cloning the source from \href{git://git.code.sf.net/p/tempo/tempo}{git.} 
+    \item Cloning the source from \href{git://git.code.sf.net/p/tempo/tempo}{git.}
+    \item run \texttt{./prepare}
     \item run: \noindent \begin{lstlisting}[language=bash]
     $ ./configure --prefix=$HOME
     \end{lstlisting} 
@@ -131,4 +130,64 @@ $./pgplot_src/makemake ../pgplot_src/ linux g77_gcc
 \end{enumerate}
          
 \subsection{CFITSIO}
+\begin{enumerate}
+    \item Download the latest version from \href{http://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-3.48.tar.gz}{nasa} and untar.
+    \item Run: \begin{lstlisting}[language=bash]
+    $ ./configure --prefix=$HOME 
+    \end{lstlisting}
+    \item \texttt{make}
+    \item \texttt{make install}
+\end{enumerate}
+\subsection{Python 2.7}
+This section may soon be irelevant as the world has been moving to using python 3. None the less:
+\begin{enumerate}
+    \item Download \href{Anaconda 3}{https://docs.anaconda.com/anaconda/install/linux/} and run the install script. \begin{lstlisting}[language=bash]
+$ bash ~/Download/Anaconda-whateverVersionNumber.sh
+\end{lstlisting}
+There is a sha256 code that can be verified aswell for security. 
+    \item It is good practice to always work witha virtual enviroment when using python. Anaconda supports this with: \begin{lstlisting}[language=bash] 
+$ conda create --name ur-name python=2.7
+\end{lstlisting} 
+The enviroment can be activated with \texttt{conda activate ur-name}. You should see your terminal now have that name in parenthasis in the begining of the prompt.
+    \item Needed Moduals: \begin{lstlisting}[language=bash]
+    # for just presto
+    $ conda install numpy scipy
+    # if using the lofasm tools also
+    $ conda install matplotlib astropy
+    \end{lstlisting}
+\end{enumerate}
+\subsection{PRESTO}
+\begin{enumerate}
+    \item Add presto to our bash astro file (where we placed the enviroment variables for PGPlot). It should point to the top level of the presto directory. Example with other variables that need to be set: \begin{lstlisting}[language=bash]
+    export PRESTO=$ASTROSOFT/presto
+    export LD_LIBRARY_PATH=$PRESTO/lib:$LD_LIBRARY_PATH 
+    export PATH=$PRESTO/bin:$PATH
+    # Do not add if using Presto 3
+    export PYTHONPATH=$PRESTO/lib/python 
+    \end{lstlisting}
+    Don't forget to \texttt{source ~/.bash\_astro} in order to take effect. 
+    \item Checkout the old version of presto. \begin{lstlisting}[language=bash]
+    $ git checkout v2.2maint
+    \end{lstlisting}
+    \item Go into the \texttt{PRESTO/src} directory and run:  \begin{lstlisting}[language=bash]
+    $ make makewisdom 
+    \end{lstlisting}
+    This command may take a while to run. 
+    \item Type \texttt{make prep}.
+    \item Followed by \texttt{make}.
+    \item Python 2.7, its moduals, and virtual enviorment should be loaded.
+    \item In the \text{\$PRESTO/setup.py} file add \texttt{/opt/local/include} to the \texttt{include\_dirs}. Also add \texttt{gfortran} to the \texttt{ppgplot\_libraries}.
+    \item Install with: \begin{lstlisting}[language=bash]     
+    $ cd $PRESTO/python ; make
+        \end{lstlisting}
+    //TODO get screenshot of how succses looks.
+    \item Test the instalation: 
+        \begin{enumerate}
+        \item Download Scott Ransom's PRESTO \href{https://www.cv.nrao.edu/~sransom/PRESTO_search_tutorial.pdf}{toutorial}.
+        \item Download the test data from the link in the slides
+        \item Run the \texttt{readfile} and \texttt{prepfold} commands. Ensure that they complete succsesfully at a minimum. Going over the rest of the document is also a good overview of the tools included.
+        \end{enumerate}
+    \item Find Pulsars, Good Hunting!
+\end{enumerate}
+
 \end{document} 
