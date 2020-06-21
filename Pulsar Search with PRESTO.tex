@@ -138,16 +138,17 @@ $./pgplot_src/makemake ../pgplot_src/ linux g77_gcc
     \item \texttt{make}
     \item \texttt{make install}
 \end{enumerate}
-\subsection{Python 2.7}
-This section may soon be irelevant as the world has been moving to using python 3. None the less:
+\subsection{Python}
+For the current relese of presto we will need python 3.7. Tho similar steps are to be taken with python 2.7 for presto 2.2. 
 \begin{enumerate}
     \item Download \href{Anaconda 3}{https://docs.anaconda.com/anaconda/install/linux/} and run the install script. \begin{lstlisting}[language=bash]
 $ bash ~/Download/Anaconda-whateverVersionNumber.sh
 \end{lstlisting}
 There is a sha256 code that can be verified aswell for security. 
     \item It is good practice to always work witha virtual enviroment when using python. Anaconda supports this with: \begin{lstlisting}[language=bash] 
-$ conda create --name ur-name python=2.7
+$ conda create --name ur-name python=3.7
 \end{lstlisting} 
+A newer version of python 3.8 was tried, but the author found much greif.
 The enviroment can be activated with \texttt{conda activate ur-name}. You should see your terminal now have that name in parenthasis in the begining of the prompt.
     \item Needed Moduals: \begin{lstlisting}[language=bash]
     # for just presto
@@ -165,22 +166,25 @@ The enviroment can be activated with \texttt{conda activate ur-name}. You should
     # Do not add if using Presto 3
     export PYTHONPATH=$PRESTO/lib/python 
     \end{lstlisting}
-    Don't forget to \texttt{source ~/.bash\_astro} in order to take effect. 
-    \item Checkout the old version of presto. \begin{lstlisting}[language=bash]
-    $ git checkout v2.2maint
-    \end{lstlisting}
+    Don't forget to \texttt{source ~/.bash\_astro} in order to take effect. If you are checking out an older version of presto then the \texttt{PYTHONPATH} variable is needed and the rest of the isntall is basicly the same.  
     \item Go into the \texttt{PRESTO/src} directory and run:  \begin{lstlisting}[language=bash]
     $ make makewisdom 
     \end{lstlisting}
     This command may take a while to run. 
     \item Type \texttt{make prep}.
     \item Followed by \texttt{make}.
-    \item Python 2.7, its moduals, and virtual enviorment should be loaded.
+    \item Python 3.7, its moduals, and virtual enviorment should be loaded.
     \item In the \text{\$PRESTO/setup.py} file add \texttt{/opt/local/include} to the \texttt{include\_dirs}. Also add \texttt{gfortran} to the \texttt{ppgplot\_libraries}.
     \item Install with: \begin{lstlisting}[language=bash]     
-    $ cd $PRESTO/python ; make
+    $ cd $PRESTO ; pip install .
         \end{lstlisting}
-    //TODO get screenshot of how succses looks.
+        If errors are found it maybe needed to modify the \texttt{setup.py} file. Add ``gfortran'' into the \texttt{ppgplot\_libraries} line. 
+        Here is the end result\ref{fig:Presto-Install}. 
+\begin{figure}
+\includegraphics[width=\linewidth]{Images/PRESTO3_install.png}
+\caption{Successful Presto Install with unit tests}
+\label{fig:Presto-Install}  			
+\end{figure}
     \item Test the instalation: 
         \begin{enumerate}
         \item Download Scott Ransom's PRESTO \href{https://www.cv.nrao.edu/~sransom/PRESTO_search_tutorial.pdf}{toutorial}.
@@ -189,5 +193,10 @@ The enviroment can be activated with \texttt{conda activate ur-name}. You should
         \end{enumerate}
     \item Find Pulsars, Good Hunting!
 \end{enumerate}
+
+
+
+
+
 
 \end{document} 
