@@ -174,17 +174,13 @@ The enviroment can be activated with \texttt{conda activate ur-name}. You should
     \item Type \texttt{make prep}.
     \item Followed by \texttt{make}.
     \item Python 3.7, its moduals, and virtual enviorment should be loaded.
-    \item In the \text{\$PRESTO/setup.py} file add \texttt{/opt/local/include} to the \texttt{include\_dirs}. Also add \texttt{gfortran} to the \texttt{ppgplot\_libraries}.
+    \item In the \texttt{\$PRESTO/setup.py} file add \texttt{/opt/local/include} to the \texttt{include\_dirs}. Also add \texttt{gfortran} to the \texttt{ppgplot\_libraries}.
     \item Install with: \begin{lstlisting}[language=bash]     
     $ cd $PRESTO ; pip install .
         \end{lstlisting}
         If errors are found it maybe needed to modify the \texttt{setup.py} file. Add ``gfortran'' into the \texttt{ppgplot\_libraries} line. 
         Here is the end result\ref{fig:Presto-Install}. 
-\begin{figure}
-\includegraphics[width=\linewidth]{Images/PRESTO3_install.png}
-\caption{Successful Presto Install with unit tests}
-\label{fig:Presto-Install}  			
-\end{figure}
+
     \item Test the instalation: 
         \begin{enumerate}
         \item Download Scott Ransom's PRESTO \href{https://www.cv.nrao.edu/~sransom/PRESTO_search_tutorial.pdf}{toutorial}.
@@ -194,7 +190,11 @@ The enviroment can be activated with \texttt{conda activate ur-name}. You should
     \item Find Pulsars, Good Hunting!
 \end{enumerate}
 
-
+\begin{figure}
+	\includegraphics[width=\linewidth]{Images/PRESTO3_install.png}
+	\caption{Successful Presto Install with unit tests}
+	\label{fig:Presto-Install}  			
+\end{figure}
 
 
 
