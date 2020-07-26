@@ -2,23 +2,42 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{graphicx}
+\usepackage[backend=bibtex]{biblatex}
+\addbibresource{ug.bib}
 
 \title{LoFASM Pulsar Search with PRESTO}
 \author{Keith E. Boehler Jr.}
 \date{}
 \begin{document}
 \maketitle
-   Hello world!
-   
-\section{Installing Presto}
+   Hello world! We are using Scott's PRESTO \textcite{Ransom01}
+
+\section{Background}
+
+\section{Tools Used}
+\subsection{bbx to sigproc}
+This program was made to fill the gap between formats that PRESTO understands and LoFASM generated files. The steps taken to convert between bbx filterbank and sigproc filterbank are based on the documentation by Dunc Lorimer \textcite{LorimerSigproc}.
+\begin{itemize}
+	\item The function \texttt{prepHeader} maps bbx header values to their corresponding keys in sigproc. Many are a 1-1 map while the hard coded ones are there as place holders. 
+	\item \texttt{fbTranscribe} orders the data to sigproc standards. The bbx format has a two dimensional array of time and frequency; the frequencies are arranged from low to high. Sigproc expects them to be in reverse order.   
+	\item The script has a few flags to manage inputs and modify outputs. The first is a path used to pass the file to be converted. Next are flags that modify the range of frequencies to be used in the out put. Since LoFASM is less sensitive on the fringes it takes the center 50Mhz bandwidth by default.
+\end{itemize}
+Typical use is as follows: \begin{lstlisting}[language=bash]
+$ python bbx2sigproc.py -p /path/to/file.bbx -l 20 -h 80
+\end{lstlisting}
+This should generate a filterbank file named after the input, \texttt{file.fil}, with a span between 20Mhz to 80Mhz in the directory where it was run.
+
+\subsection{lofasmio}
+
+\section{Installing PRESTO}
 The instructions here are based on those by Scott Ransom's Install page on github as well as other tips found on the internet. The following will be centered on using Ubuntu 20.04. Tips for macOS Mojave will be provided as well. 
 \subsection{Prerequisites}
 \begin{enumerate}
    	\item GNU gcc with gfortran
-    \item For glib -> csh autoconf meson libglib2.0-dev
-    \item For cfitsio -> libcfitsio-bin libcfitsio-doc libcfitsio-dev
-    \item For PRESTO -> libpng.dev zlib1g-dev
-    \item For FFTW3 -> libfftw3-bin libfftw3-dev
+    \item For glib: csh autoconf meson libglib2.0-dev
+    \item For cfitsio: libcfitsio-bin libcfitsio-doc libcfitsio-dev
+    \item For PRESTO: libpng.dev zlib1g-dev
+    \item For FFTW3: libfftw3-bin libfftw3-dev
     \item Python 2.7 with virtual env. Anaconda works well. 
 \end{enumerate}
    
@@ -196,7 +215,7 @@ The enviroment can be activated with \texttt{conda activate ur-name}. You should
 	\label{fig:Presto-Install}  			
 \end{figure}
 
-
+\printbibliography
 
 
 \end{document} 
